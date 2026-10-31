@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "server": "json-server db.json --port 3001",
     "lint": "oxlint",
     "preview": "vite preview"
   },
@@ -13,6 +14,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/react-query": "^5.105.0",
     "@tanstack/react-query-devtools": "^5.105.0",
+    "json-server": "^1.0.0-beta.15",
     "lucide-react": "^1.66.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
