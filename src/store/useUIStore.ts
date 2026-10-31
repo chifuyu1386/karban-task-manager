@@ -1,5 +1,5 @@
-// src/store/useUIStore.ts
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import type { TaskPriority, TaskStatus } from '../types/task';
 
 export type FilterStatus = 'all' | TaskStatus;
@@ -21,18 +21,30 @@ interface UIState {
   resetFilters: () => void;
 }
 
-export const useUIStore = create<UIState>((set) => ({
-  isAddModalOpen: false,
-  searchQuery: '',
-  statusFilter: 'all',
-  priorityFilter: 'all',
-  viewMode: 'kanban',
-  openAddModal: () => set({ isAddModalOpen: true }),
-  closeAddModal: () => set({ isAddModalOpen: false }),
-  setSearchQuery: (searchQuery) => set({ searchQuery }),
-  setStatusFilter: (statusFilter) => set({ statusFilter }),
-  setPriorityFilter: (priorityFilter) => set({ priorityFilter }),
-  setViewMode: (viewMode) => set({ viewMode }),
-  resetFilters: () =>
-    set({ searchQuery: '', statusFilter: 'all', priorityFilter: 'all' }),
-}));
+export const useUIStore = create<UIState>()(
+  persist(
+    (set) => ({
+      isAddModalOpen: false,
+      searchQuery: '',
+      statusFilter: 'all',
+      priorityFilter: 'all',
+      viewMode: 'kanban',
+      openAddModal: () => set({ isAddModalOpen: true }),
+      closeAddModal: () => set({ isAddModalOpen: false }),
+      setSearchQuery: (searchQuery) => set({ searchQuery }),
+      setStatusFilter: (statusFilter) => set({ statusFilter }),
+      setPriorityFilter: (priorityFilter) => set({ priorityFilter }),
+      setViewMode: (viewMode) => set({ viewMode }),
+      resetFilters: () =>
+        set({ searchQuery: '', statusFilter: 'all', priorityFilter: 'all' }),
+    }),
+    {
+      name: 'karban-ui-storage',
+      partialize: (state) => ({
+        viewMode: state.viewMode,
+        statusFilter: state.statusFilter,
+        priorityFilter: state.priorityFilter,
+      }),
+    }
+  )
+);
