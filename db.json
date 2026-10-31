@@ -23,6 +23,15 @@
       "status": "todo",
       "priority": "medium",
       "createdAt": "۱۴۰۵/۰۸/۰۹"
+    },
+    {
+      "title": "طراحی ورود کاربران",
+      "description": "بهترین خودت باش",
+      "priority": "high",
+      "status": "todo",
+      "createdAt": "۱۴۰۵/۸/۹",
+      "id": "7HA31BuGcxc"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
