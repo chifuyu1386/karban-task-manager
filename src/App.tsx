@@ -3,15 +3,37 @@ import { useTasks } from './hooks/useTasks';
 import { useUIStore } from './store/useUIStore';
 import { AddTaskModal } from './components/AddTaskModal';
 import { TaskCard } from './components/TaskCard';
+import { FilterBar } from './components/FilterBar';
+import { KanbanBoard } from './components/KanbanBoard';
 
 export default function App() {
   const { data: tasks, isLoading, isError, error } = useTasks();
-  const { openAddModal } = useUIStore();
+  const {
+    openAddModal,
+    searchQuery,
+    statusFilter,
+    priorityFilter,
+    viewMode,
+  } = useUIStore();
+
+  const filteredTasks = tasks?.filter((task) => {
+    const matchesSearch =
+      task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      task.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === 'all' || task.status === statusFilter;
+
+    const matchesPriority =
+      priorityFilter === 'all' || task.priority === priorityFilter;
+
+    return matchesSearch && matchesStatus && matchesPriority;
+  });
 
   return (
-    <div className="min-h-screen bg-slate-100 p-8 font-sans">
-      <div className="mx-auto max-w-4xl">
-        <header className="mb-8 flex items-center justify-between rounded-2xl bg-white p-6 shadow-sm">
+    <div className="min-h-screen bg-slate-100 p-4 font-sans md:p-8">
+      <div className="mx-auto max-w-5xl">
+        <header className="mb-6 flex items-center justify-between rounded-2xl bg-white p-6 shadow-sm">
           <div>
             <h1 className="text-2xl font-bold text-slate-800">کاربان (Karban)</h1>
             <p className="mt-1 text-sm text-slate-500">
@@ -26,13 +48,15 @@ export default function App() {
           </button>
         </header>
 
+        <FilterBar />
+
         <main>
           {isLoading && (
-            <div className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-3">
               {[1, 2, 3].map((item) => (
                 <div
                   key={item}
-                  className="h-24 w-full animate-pulse rounded-2xl bg-white p-6 shadow-sm"
+                  className="h-40 w-full animate-pulse rounded-2xl bg-white p-6 shadow-sm"
                 />
               ))}
             </div>
@@ -45,18 +69,24 @@ export default function App() {
             </div>
           )}
 
-          {tasks && tasks.length === 0 && (
+          {filteredTasks && filteredTasks.length === 0 && (
             <div className="rounded-2xl bg-white p-12 text-center text-slate-500 shadow-sm">
-              هیچ تسکی وجود ندارد. اولین تسک خود را بسازید!
+              هیچ تسکی با این مشخصات پیدا نشد!
             </div>
           )}
 
-          {tasks && tasks.length > 0 && (
-            <div className="grid gap-4 md:grid-cols-3">
-              {tasks.map((task) => (
-                <TaskCard key={task.id} task={task} />
-              ))}
-            </div>
+          {filteredTasks && filteredTasks.length > 0 && (
+            <>
+              {viewMode === 'kanban' ? (
+                <KanbanBoard tasks={filteredTasks} />
+              ) : (
+                <div className="grid gap-4 md:grid-cols-3">
+                  {filteredTasks.map((task) => (
+                    <TaskCard key={task.id} task={task} />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </main>
       </div>

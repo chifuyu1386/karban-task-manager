@@ -1,13 +1,4 @@
 {
-  "tasks": [
-    {
-      "title": "توسعه هدفمند",
-      "description": "توسعه کاربان با هدفمندی هرچه بیشتر",
-      "priority": "high",
-      "status": "todo",
-      "createdAt": "۱۴۰۵/۸/۹",
-      "id": "X_QhBTYyMTs"
-    }
-  ],
+  "tasks": [],
   "$schema": "./node_modules/json-server/schema.json"
 }
