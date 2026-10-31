@@ -5,7 +5,7 @@ import { AddTaskModal } from "./components/AddTaskModal";
 import { TaskCard } from "./components/TaskCard";
 import { FilterBar } from "./components/FilterBar";
 import { KanbanBoard } from "./components/KanbanBoard";
-import { StatsBar } from "./components/StatsBar";
+import { StatsBar } from "./components/StatsBar"
 
 export default function App() {
   const { data: tasks, isLoading, isError, error } = useTasks();

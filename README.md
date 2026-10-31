@@ -1,32 +1,77 @@
-# React + TypeScript + Vite
+<div dir="rtl">
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+# کاربان (Karban) | سامانه مدیریت هوشمند تسک‌ها
 
-Currently, two official plugins are available:
+**کاربان** یک اپلیکیشن مدرن مدیریت وظایف و پروژه به سبک بردهای کانبان (نظیر Linear و Trello) است که با هدف پیاده‌سازی استانداردهای روز مهندسی فرانت‌اند، معماری ماژولار و تفکیک اصولی وضعیت‌های برنامه (State Management) توسعه داده شده است.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## هدف معماری و تصمیمات فنی پروژه
 
-## React Compiler
+مهم‌ترین چالش در اپلیکیشن‌های مدرن React، مدیریت صحیح داده‌ها و جلوگیری از مخلوط کردن داده‌های سرور با وضعیت‌های رابط کاربری است. در معماری **کاربان**، این مرز به صورت کاملاً استاندارد تفکیک شده است:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **مدیریت وضعیت سرور (Server State) با TanStack Query v5:** تمام عملیات‌های ناهمگام (Async)، دریافت لیست تسک‌ها، کش کردن داده‌ها، جلوگیری از درخواست‌های تکراری (Request Deduplication) و به‌روزرسانی خودکار رابط کاربری پس از عملیات‌های ایجاد، ویرایش و حذف (Cache Invalidation) توسط React Query مدیریت می‌شود.
+* **مدیریت وضعیت کلاینت (Client State) با Zustand:** وضعیت‌های خالص رابط کاربری شامل باز و بسته بودن مودال‌ها، عبارت جستجو، فیلترهای فعال و حالت نمایش صفحه (کانبان یا شبکه‌ای) در استور سبک Zustand نگهداری می‌شوند.
+* **ذخیره‌سازی انتخابی در مرورگر (Selective Persistence):** با استفاده از میدل‌ویر `persist` و قابلیت `partialize` در Zustand، تنها تنظیمات نمایشی و فیلترهای کاربر در LocalStorage ذخیره می‌شوند تا وضعیت‌های موقتی (مانند باز بودن مودال) پس از رفرش صفحه باعث اختلال در تجربه کاربری نشوند.
+* **استیت مشتق‌شده (Derived State):** فیلتر کردن و جستجوی تسک‌ها بدون دستکاری کش اصلی سرور و در لحظه رندر بر اساس ترکیب داده‌های کش‌شده در TanStack Query و فیلترهای موجود در Zustand انجام می‌شود.
 
-## Expanding the Oxlint configuration
+## تکنولوژی‌ها و ابزارها
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+* **هسته اصلی:** React 19, TypeScript, Vite
+* **مدیریت Server State:** TanStack React Query v5 + Query Devtools
+* **مدیریت Client State:** Zustand (همراه با Persist Middleware)
+* **استایل‌دهی و رابط کاربری:** Tailwind CSS v4 (طراحی کاملاً راست‌چین و واکنش‌گرا با فونت وزیرمتن)
+* **آیکون‌ها:** Lucide React
+* **شبیه‌ساز سرور و دیتابیس:** JSON Server (پشتیبانی کامل از متدهای REST شامل GET, POST, PATCH, DELETE)
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+## امکانات و ویژگی‌ها
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+* **عملیات کامل CRUD:** قابلیت افزودن تسک جدید، تغییر وضعیت لحظه‌ای هر تسک و حذف تسک‌ها همراه با به‌روزرسانی خودکار لیست و آمارها.
+* **دو حالت نمایش (View Modes):** امکان جابه‌جایی آنی بین نمای **بورد ستونی کانبان** (تفکیک شده بر اساس وضعیت) و نمای **شبکه‌ای (Grid)**.
+* **جستجو و فیلتر زنده:** فیلتر همزمان تسک‌ها بر اساس عنوان، توضیحات، وضعیت انجام و درجه اولویت (فوری، متوسط، عادی).
+* **نوار آمار زنده (Stats Bar):** نمایش تعداد کل تسک‌ها و تفکیک وضعیت آن‌ها با بهره‌گیری از اشتراک کش در React Query بدون نیاز به Prop Drilling.
+* **مدیریت وضعیت‌های بارگذاری و خطا:** نمایش Skeleton Loading در زمان دریافت اطلاعات، غیرفعال‌سازی موضعی کارت‌ها در حین عملیات Mutation و نمایش پیام‌های خطای واضح در صورت قطع ارتباط با سرور.
+
+## ساختار پوشه‌بندی و معماری پروژه (Separation of Concerns)
+
+کدهای پروژه بر اساس اصل تفکیک مسئولیت‌ها در لایه‌های مجزا سازماندهی شده‌اند تا هیچ کامپوننتی مستقیماً درگیر منطق ارتباط با سرور نباشد:
+
+```text
+src/
+├── api/             # توابع خالص ارتباط با سرور (Fetch API) بدون وابستگی به React
+│   └── tasksApi.ts
+├── components/      # کامپوننت‌های مستقل و ماژولار رابط کاربری
+│   ├── AddTaskModal.tsx
+│   ├── FilterBar.tsx
+│   ├── KanbanBoard.tsx
+│   ├── StatsBar.tsx
+│   └── TaskCard.tsx
+├── hooks/           # کاستوم هوک‌های TanStack Query (پل ارتباطی API و کامپوننت‌ها)
+│   └── useTasks.ts
+├── store/           # مدیریت وضعیت‌های کلاینت و تنظیمات UI با Zustand
+│   └── useUIStore.ts
+├── types/           # قراردادها و اینترفیس‌های TypeScript
+│   └── task.ts
+├── App.tsx          # کامپوننت اصلی و چیدمان داشبورد
+└── main.tsx         # نقطه ورود برنامه و پیکربندی QueryClientProvider
+
+
+برای اجرای این پروژه روی سیستم خود، مراحل زیر را به ترتیب دنبال کنید:
+
+۱. کلون کردن مخزن و نصب وابستگی‌ها:
+
+Bash
+git clone [https://github.com/YOUR_USERNAME/karban-task-manager.git](https://github.com/YOUR_USERNAME/karban-task-manager.git)
+cd karban-task-manager
+npm install
+۲. اجرای سرور دیتابیس محلی (JSON Server):
+
+در یک ترمینال، دستور زیر را اجرا کنید تا سرور محلی روی پورت 3001 روشن شود:
+
+Bash
+npm run server
+۳. اجرای محیط توسعه فرانت‌اند (Vite):
+
+در یک ترمینال جدید، دستور زیر را وارد کنید:
+
+Bash
+npm run dev
+حالا می‌توانید پروژه را در آدرس نمایش داده شده در ترمینال (معمولاً http://localhost:5173) مشاهده و بررسی کنید.

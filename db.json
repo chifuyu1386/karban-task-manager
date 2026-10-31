@@ -1,13 +1,4 @@
 {
-  "tasks": [
-    {
-      "title": "یبکسیتا",
-      "description": "",
-      "priority": "medium",
-      "status": "todo",
-      "createdAt": "۱۴۰۵/۸/۹",
-      "id": "K-0Onc8YD3U"
-    }
-  ],
+  "tasks": [],
   "$schema": "./node_modules/json-server/schema.json"
 }
