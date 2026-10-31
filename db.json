@@ -1,0 +1,28 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "طراحی رابط کاربری داشبورد کاربان",
+      "description": "استفاده از تیلویند ۴ و رعایت اصول ریسپانسیو و راست‌چین",
+      "status": "done",
+      "priority": "high",
+      "createdAt": "۱۴۰۵/۰۸/۰۸"
+    },
+    {
+      "id": "2",
+      "title": "پیاده‌سازی دریافت اطلاعات با TanStack Query",
+      "description": "نوشتن کاستوم هوک useTasks و مدیریت حالت لودینگ و خطا",
+      "status": "in-progress",
+      "priority": "high",
+      "createdAt": "۱۴۰۵/۰۸/۰۹"
+    },
+    {
+      "id": "3",
+      "title": "اتصال استور Zustand برای فیلترها",
+      "description": "ذخیره وضعیت فیلترها و مودال افزودن تسک در سمت کلاینت",
+      "status": "todo",
+      "priority": "medium",
+      "createdAt": "۱۴۰۵/۰۸/۰۹"
+    }
+  ]
+}
